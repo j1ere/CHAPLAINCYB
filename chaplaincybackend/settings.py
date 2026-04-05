@@ -157,10 +157,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://stanneschaplaincy.com",
+    "https://www.stanneschaplaincy.com",
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "https://stanneschaplaincy.com",
+    "https://www.stanneschaplaincy.com",
     "http://localhost:3000",
     "http://localhost:3001",
 ]
