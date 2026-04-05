@@ -1,0 +1,92 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+static/
+
+# Django migrations (optional — keep if working in a team)
+# **/migrations/*
+# !**/migrations/__init__.py
+
+# Environment variables
+.env
+.env.*
+*.env
+
+# Secret files
+*.key
+*.pem
+
+# Poetry
+poetry.lock
+# (Optional: keep poetry.lock in repo for reproducibility — recommended for apps)
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Coverage / testing
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+
+# mypy / type checking
+.mypy_cache/
+.dmypy.json
+
+# Ruff / flake8 / lint
+.ruff_cache/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# Node (if using frontend like Next.js)
+node_modules/
+.next/
+out/
+
+# Logs
+*.log
+
+# Docker
+*.pid
+*.seed
+
+# Celery
+celerybeat-schedule
+
+# Sentry / debug
+*.orig

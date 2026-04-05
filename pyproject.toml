@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "chaplaincyb"
+version = "0.1.0"
+description = ""
+authors = ["j1ere <jeremywambua106@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^6.0"
+djangorestframework = "^3.16.1"
+pillow = "^12.1.0"
+djangorestframework-simplejwt = "^5.5.1"
+django-cors-headers = "^4.9.0"
+django-filter = "^25.2"
+requests = "^2.33.1"
+beautifulsoup4 = "^4.14.3"
+reportlab = "^4.4.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
