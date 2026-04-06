@@ -1,16 +1,19 @@
-from django.core.mail import EmailMessage
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-
+from resend import Resend 
+import os
 from .serializers import ContactMessageSerializer
 
 from rest_framework.permissions import IsAdminUser
 
 from .models import ContactMessage
 from .serializers import ContactMessageSerializer
+
 from rest_framework import status
+
+resend = Resend(api_key=os.getenv("RESEND_API_KEY"))
 
 class ContactMessageAPIView(APIView):
     permission_classes = [AllowAny]
@@ -21,32 +24,27 @@ class ContactMessageAPIView(APIView):
         if serializer.is_valid():
             data = serializer.validated_data
 
-            email = EmailMessage(
-                subject=f"New Contact Message: {data.get('category')}",
-                body=f"""
-From: {data.get('first_name')} {data.get('last_name')}
-Email: {data.get('email')}
-Phone: {data.get('phone')}
-
-Message:
-{data.get('message')}
-                """,
-                from_email='admin@stanneschaplaincy.com',  # uses DEFAULT_FROM_EMAIL
-                to=["csa.maseno@stanneschaplaincy.com"],
-                reply_to=[data.get("email")],  # ✅ NOW WORKS
-            )
-
-            email.send(fail_silently=False)
+            try:
+                resend.emails.send(
+                    from_email="contact@contact.stanneschaplaincy.com",
+                    to=["csa.maseno@stanneschaplaincy.com"],
+                    subject=f"New Contact Message: {data.get('category')}",
+                    html=f"""
+                        <p><strong>From:</strong> {data.get('first_name')} {data.get('last_name')}</p>
+                        <p><strong>Email:</strong> {data.get('email')}</p>
+                        <p><strong>Phone:</strong> {data.get('phone')}</p>
+                        <p><strong>Message:</strong></p>
+                        <p>{data.get('message')}</p>
+                    """,
+                    reply_to=[data.get("email")]
+                )
+            except Exception as e:
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             serializer.save()
-
-            return Response(
-                {"message": "Message sent successfully"},
-                status=status.HTTP_201_CREATED,
-            )
+            return Response({"message": "Message sent successfully"}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
 
 class AdminMessageListAPIView(APIView):

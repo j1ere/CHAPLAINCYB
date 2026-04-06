@@ -21,6 +21,10 @@ from django.contrib.auth.tokens import default_token_generator
 
 from django.shortcuts import redirect
 
+from resend import Resend
+import os
+
+resend = Resend(api_key=os.getenv("RESEND_API_KEY"))
 
 
 class RegisterView(APIView):
@@ -47,39 +51,27 @@ class RegisterView(APIView):
 
         # Use your real frontend domain in production
         # verification_link = f"https://stanneschaplaincy.com/verify-email/{uid}/{token}/"   # ← Change this!
-        verification_link = f"http://localhost:8000/auth/verify-email/{uid}/{token}/"# Change in production
+        verification_link = f"https://api.stanneschaplaincy.com/auth/verify-email/{uid}/{token}/"# Change in production
 
         subject = "Verify your St. Anne's Chaplaincy Account"
 
-        message = f"""
-        Hi {user.full_name or user.get_full_name() or user.email},
-
-        Thank you for registering with St. Anne's Catholic Chaplaincy at Maseno University.
-
-        Please click the link below to verify your email address and activate your account:
-
-        {verification_link}
-
-        This link will expire in 24 hours.
-
-        If you did not register for an account, please ignore this email.
-
-        Best regards,
-        St. Anne's Chaplaincy ICT Team
-        """
-
         try:
-            send_mail(
+            resend.emails.send(
+                from_email="contact@contact.stanneschaplaincy.com",
+                to=[user.email],
                 subject=subject,
-                message=message,
-                from_email="admin@stanneschaplaincy.com",        # Uses the nice "St. Anne's..." name
-                recipient_list=[user.email],
-                fail_silently=False,
+                html=f"""
+                    <p>Hi {user.full_name or user.get_full_name() or user.email},</p>
+                    <p>Thank you for registering with St. Anne's Chaplaincy at Maseno University.</p>
+                    <p>Please click the link below to verify your email address and activate your account:</p>
+                    <p><a href="{verification_link}">{verification_link}</a></p>
+                    <p>This link will expire in 24 hours. If you did not register for an account, please ignore this email.</p>
+                    <p>Best regards,<br>St. Anne's Chaplaincy ICT Team</p>
+                """,
             )
-            print(f"Verification email sent to {user.email}")  # For debugging
+            print(f"Verification email sent to {user.email}")
         except Exception as e:
-            print(f"Failed to send email to {user.email}: {e}")
-            # You can choose to still create the user or raise error
+            print(f"Failed to send verification email to {user.email}: {e}")
 
 
 class VerifyEmailView(APIView):
@@ -102,7 +94,7 @@ class VerifyEmailView(APIView):
             # return Response({
             #     "message": "Email verified successfully. You are now logged in."
             # }, status=200)
-            return redirect("http://localhost:3000/?verified=true")
+            return redirect("https://stanneschaplaincy.com/?verified=true")
 
         return Response({"error": "Invalid or expired token"}, status=400)
 
@@ -193,33 +185,22 @@ class ForgotPasswordView(APIView):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
 
-        reset_link = f"http://localhost:3000/reset-password/{uid}/{token}/"   # Change in production
+        reset_link = f"https://stanneschaplaincy.com/reset-password/{uid}/{token}/"   
 
         subject = "Reset Your St. Anne's Chaplaincy Password"
-        message = f"""
-        Hi {user.full_name or user.email},
-
-        You requested to reset your password for your St. Anne's Chaplaincy account.
-
-        Click the link below to reset your password:
-
-        {reset_link}
-
-        This link will expire in 24 hours.
-
-        If you did not request a password reset, please ignore this email.
-
-        Best regards,
-        St. Anne's Chaplaincy Team
-        """
-
         try:
-            send_mail(
+            resend.emails.send(
+                from_email="contact@contact.stanneschaplaincy.com",
+                to=[user.email],
                 subject=subject,
-                message=message,
-                from_email="admin@stanneschaplaincy.com",
-                recipient_list=[user.email],
-                fail_silently=False,
+                html=f"""
+                    <p>Hi {user.full_name or user.email},</p>
+                    <p>You requested to reset your password for your St. Anne's Chaplaincy account.</p>
+                    <p>Click the link below to reset your password:</p>
+                    <p><a href="{reset_link}">{reset_link}</a></p>
+                    <p>This link will expire in 24 hours. If you did not request a password reset, please ignore this email.</p>
+                    <p>Best regards,<br>St. Anne's Chaplaincy Team</p>
+                """,
             )
         except Exception as e:
             print(f"Password reset email failed: {e}")

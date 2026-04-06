@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 load_dotenv()
-
+from resend import Resend
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
+resend = Resend(api_key=RESEND_API_KEY)
 import dj_database_url
 
 from pathlib import Path
@@ -200,34 +202,27 @@ REST_FRAMEWORK = {
     }
 }
 
+DEFAULT_FROM_EMAIL = "contact@contact.stanneschaplaincy.com"
 
-
-
-
-
-
-DEFAULT_FROM_EMAIL = "admin@stanneschaplaincy.com"
+# DEFAULT_FROM_EMAIL = "admin@stanneschaplaincy.com"
 
 
 # ====================== EMAIL CONFIGURATION (Zoho Mail) ======================
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Zoho SMTP Settings
-EMAIL_HOST = 'smtp.zoho.com'          # Use 'smtppro.zoho.com' if it's a paid organization account
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False                 # Important: Do NOT set both TLS and SSL to True
+# EMAIL_HOST = 'smtp.zoho.com'          # Use 'smtppro.zoho.com' if it's a paid organization account
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False                 # Important: Do NOT set both TLS and SSL to True
 
 # Your Zoho credentials
-EMAIL_HOST_USER = 'admin@stanneschaplaincy.com'
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")  
+# EMAIL_HOST_USER = 'admin@stanneschaplaincy.com'
+# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")  
 
-# This makes the "From" name look professional
-DEFAULT_FROM_EMAIL = "St. Anne's Chaplaincy <admin@stanneschaplaincy.com>"
+# # This makes the "From" name look professional
+# DEFAULT_FROM_EMAIL = "admin@stanneschaplaincy.com"
 
 # Optional
-SERVER_EMAIL = DEFAULT_FROM_EMAIL
-
-
-    
+# SERVER_EMAIL = DEFAULT_FROM_EMAIL
