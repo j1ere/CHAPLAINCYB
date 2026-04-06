@@ -171,6 +171,9 @@ CORS_ALLOWED_ORIGINS = [
 # Enable cookies with cross-origin requests
 CORS_ALLOW_CREDENTIALS = True
 
+SESSION_COOKIE_DOMAIN = ".stanneschaplaincy.com"
+CSRF_COOKIE_DOMAIN = ".stanneschaplaincy.com"
+
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = True  # JS cannot access
 CSRF_COOKIE_SECURE = True   # False for local dev
@@ -179,6 +182,7 @@ SESSION_COOKIE_SECURE = True
 
 SESSION_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SAMESITE = "None"
+
 
 
 REST_FRAMEWORK = {
