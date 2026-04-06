@@ -1,8 +1,5 @@
 from dotenv import load_dotenv
 load_dotenv()
-from resend import Resend
-RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
-resend = Resend(api_key=RESEND_API_KEY)
 import dj_database_url
 
 from pathlib import Path
