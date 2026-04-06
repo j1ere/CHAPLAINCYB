@@ -173,9 +173,9 @@ CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = True  # JS cannot access
-CSRF_COOKIE_SECURE = False   # False for local dev
+CSRF_COOKIE_SECURE = True   # False for local dev
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = True
 
 SESSION_COOKIE_SAMESITE = "Lax"
 
