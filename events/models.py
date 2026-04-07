@@ -1,7 +1,6 @@
 # events/models.py
 from django.db import models
 from django.contrib.auth import get_user_model
-from .storages import PublicRawCloudinaryStorage  # import the custom storage
 
 User = get_user_model()
 
@@ -11,10 +10,10 @@ class CalendarFile(models.Model):
         ('csa', 'Chaplaincy Calendar'),
         ('program', 'Program Guide'),
     )
-    
+
     
     file_type = models.CharField(max_length=10, choices=TYPE_CHOICES, unique=True)
-    file = models.FileField(upload_to='calendars/', storage=PublicRawCloudinaryStorage())
+    file = models.FileField(upload_to='calendars/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
