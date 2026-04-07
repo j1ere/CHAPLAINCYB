@@ -15,8 +15,8 @@ class CalendarFile(models.Model):
     file_type = models.CharField(max_length=10, choices=TYPE_CHOICES, unique=True)
     # file = models.FileField(upload_to='calendars/')
 
-    file_url = models.URLField(null=True, blank=True)
-    
+    file_url = models.URLField(max_length=500,null=True, blank=True)
+
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
