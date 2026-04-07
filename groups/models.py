@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from django.conf import settings
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 
 class Group(models.Model):
@@ -73,7 +74,7 @@ class Group(models.Model):
 
 class GroupImage(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to="group_gallery/%Y/%m/%d/")
+    image = models.ImageField(upload_to="group_gallery/%Y/%m/%d/", storage=MediaCloudinaryStorage())
     uploaded_at = models.DateTimeField(auto_now_add=True)
     order = models.PositiveSmallIntegerField(default=0)
 

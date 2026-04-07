@@ -1,12 +1,17 @@
 # theme/models.py
 from django.db import models
 from django.contrib.auth import get_user_model
+from cloudinary_storage.storage import MediaCloudinaryStorage  # ← add this
 
 User = get_user_model()
 
 class Theme(models.Model):
     text = models.TextField(help_text="The main inspirational theme text")
-    image = models.ImageField(upload_to='themes/', help_text="Theme banner image")
+    image = models.ImageField(
+            upload_to='themes/',
+            storage=MediaCloudinaryStorage(),          # ← add this
+            help_text="Theme banner image"
+        )  
     year = models.CharField(max_length=50, help_text="e.g., 2024/2025 - Semester 2")
     is_active = models.BooleanField(default=False, help_text="Only one theme should be active at a time")
     date_created = models.DateField(auto_now_add=True)
