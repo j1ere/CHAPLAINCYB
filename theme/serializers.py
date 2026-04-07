@@ -14,7 +14,6 @@ class ThemeSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_by', 'date_created']
 
     def get_image_url(self, obj):
-        request = self.context.get('request')
         if obj.image:
             return obj.image.url
         return None
