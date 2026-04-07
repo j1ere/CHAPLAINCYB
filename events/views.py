@@ -15,6 +15,8 @@ from .serializers import (
     CalendarFileSerializer,
 )
 
+from .supabase_client import upload_file
+import uuid
 
 class IsAdminUser(permissions.BasePermission):
     """Only staff/superusers can access these admin endpoints"""
@@ -63,18 +65,25 @@ class CalendarFileViewSet(viewsets.ViewSet):
         if file_type not in ['csa', 'program']:
             return Response({"error": "Invalid file_type"}, status=status.HTTP_400_BAD_REQUEST)
 
+         # Generate unique filename (VERY IMPORTANT)
+        filename = f"calendars/{uuid.uuid4()}_{file.name}"
+
+        # 🔥 Upload to Supabase
+        public_url = upload_file(file, filename)
+
         # Replace existing file of same type
         CalendarFile.objects.filter(file_type=file_type).delete()
 
+        # ✅ Save URL instead of file
         calendar = CalendarFile.objects.create(
             file_type=file_type,
-            file=file,
+            file_url=public_url,
             uploaded_by=request.user
         )
 
         serializer = CalendarFileSerializer(calendar)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+    
     def retrieve(self, request, pk=None):
         calendar = get_object_or_404(CalendarFile, pk=pk)
         serializer = CalendarFileSerializer(calendar)

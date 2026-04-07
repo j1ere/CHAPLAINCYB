@@ -13,13 +13,16 @@ class CalendarFile(models.Model):
 
     
     file_type = models.CharField(max_length=10, choices=TYPE_CHOICES, unique=True)
-    file = models.FileField(upload_to='calendars/')
+    # file = models.FileField(upload_to='calendars/')
+
+    file_url = models.URLField(null=True, blank=True)
+    
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.get_file_type_display()} - {self.file.name}"
-
+        return f"{self.get_file_type_display()} - {self.file_url}"
+    
     class Meta:
         verbose_name = "Calendar File"
         verbose_name_plural = "Calendar Files"

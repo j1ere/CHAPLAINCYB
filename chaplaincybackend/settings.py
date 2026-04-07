@@ -217,6 +217,9 @@ REST_FRAMEWORK = {
 DEFAULT_FROM_EMAIL = "contact@contact.stanneschaplaincy.com"
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 # DEFAULT_FROM_EMAIL = "admin@stanneschaplaincy.com"
 
 
