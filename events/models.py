@@ -12,6 +12,7 @@ class CalendarFile(models.Model):
         ('program', 'Program Guide'),
     )
     
+    
     file_type = models.CharField(max_length=10, choices=TYPE_CHOICES, unique=True)
     file = models.FileField(upload_to='calendars/', storage=PublicRawCloudinaryStorage())
     uploaded_at = models.DateTimeField(auto_now_add=True)
