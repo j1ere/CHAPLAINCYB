@@ -13,7 +13,7 @@ class CalendarEntrySerializer(serializers.ModelSerializer):
         model = CalendarEntry
         fields = [
             'id', 'date', 'event', 'type', 'readings', 
-            'verse', 'notes', 'created_at', 'updated_at'
+            'liturgical_color', 'notes', 'created_at', 'updated_at'
         ]
         read_only_fields = ['created_by']
 

@@ -13,11 +13,25 @@ class CalendarEntry(models.Model):
         ('optional', 'Optional Memorial'),
     ]
 
+    COLOR_CHOICES = [
+        ('white', 'White'),
+        ('red', 'Red'),
+        ('green', 'Green'),
+        ('violet', 'Violet / Purple'),
+    ]
+
     date = models.DateField()
     event = models.CharField(max_length=255)
     type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='feast')
     readings = models.JSONField(default=list)  # Store list of readings as JSON
-    verse = models.CharField(max_length=100, blank=True, null=True)
+    # verse = models.CharField(max_length=100, blank=True, null=True)
+    liturgical_color = models.CharField(
+        max_length=20,
+        choices=COLOR_CHOICES,
+        blank=True,
+        null=True,
+        default=None
+    )
     notes = models.TextField(blank=True, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
