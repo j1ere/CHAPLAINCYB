@@ -12,9 +12,19 @@ class Group(models.Model):
         ("Other", "Other"),
     ]
 
+    YEAR_CHOICES = [
+        ("1", "First Year"),
+        ("2", "Second Year"),
+        ("3", "Third Year"),
+        ("4", "Fourth Year"),
+        ("5", "Fifth Year"),
+        ("alumni", "Alumni"),
+    ]
+
     name = models.CharField(max_length=200)
     type = models.CharField(max_length=50, choices=TYPE_CHOICES, default="Prayer House")
     slug = models.SlugField(max_length=250, unique=True, blank=True)
+    year = models.CharField(max_length=10, choices=YEAR_CHOICES, blank=True)  # ✅ NEW
 
     members = models.CharField(max_length=50, blank=True)
     meeting_time = models.CharField(max_length=100, blank=True)
@@ -46,6 +56,15 @@ class Group(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+        # ✅ Auto-handle alumni flag
+        if self.year == "alumni":
+            self.is_alumni = True
+
+        # ✅ Ensure year only applies to Year Group
+        if self.type != "Year Group":
+            self.year = ""
+
+        # ✅ Slug generation
         if not self.slug:
             base_slug = slugify(self.name)
             slug = base_slug
@@ -54,7 +73,9 @@ class Group(models.Model):
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug
+
         super().save(*args, **kwargs)
+
 
     @property
     def community_list(self):

@@ -11,7 +11,6 @@ class IsAdminUser(permissions.BasePermission):
         return request.user.is_authenticated and (request.user.is_staff or request.user.is_superuser)
 
 
-
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.prefetch_related('images').all()
     permission_classes = [IsAdminUser]
@@ -54,7 +53,6 @@ class GroupViewSet(viewsets.ModelViewSet):
         return Response(GroupSerializer(group, context={'request': request}).data)
 
 
-
 class PublicGroupDetailAPIView(viewsets.ViewSet):
     permission_classes = [permissions.AllowAny]
 
@@ -62,7 +60,6 @@ class PublicGroupDetailAPIView(viewsets.ViewSet):
         group = get_object_or_404(Group, slug=slug)
         serializer = GroupSerializer(group, context={'request': request})
         return Response(serializer.data)
-
 
 
 class PublicGroupViewSet(viewsets.ReadOnlyModelViewSet):
@@ -74,12 +71,16 @@ class PublicGroupViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = super().get_queryset()
 
         group_type = self.request.query_params.get('type')
+        year = self.request.query_params.get('year')
         is_alumni = self.request.query_params.get('is_alumni')
 
         if group_type:
             queryset = queryset.filter(type=group_type)
 
+        if year:
+            queryset = queryset.filter(year=year)
+
         if is_alumni is not None:
             queryset = queryset.filter(is_alumni=is_alumni.lower() == 'true')
 
-        return queryset
+        return queryset 

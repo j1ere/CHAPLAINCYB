@@ -21,9 +21,11 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = [
-            'id', 'name', 'type', 'slug', 'members', 'meeting_time',
-            'meeting_day', 'meeting_location', 'communities', 'community_list',
-            'chair', 'treasurer', 'secretary', 'leadership', 'about',
+            'id', 'name', 'type', 'year', 'slug', 'members',
+            'meeting_time', 'meeting_day', 'meeting_location',
+            'communities', 'community_list',
+            'chair', 'treasurer', 'secretary',
+            'leadership', 'about',
             'images', 'is_alumni', 'created_at'
         ]
 
@@ -31,12 +33,19 @@ class GroupSerializer(serializers.ModelSerializer):
         return obj.leadership
 
 
+
 class GroupCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = [
-            'name', 'type', 'members', 'meeting_time',
-            'meeting_day', 'meeting_location', 'communities',
-            'chair', 'treasurer', 'secretary',
-            'about', 'is_alumni'
+            'name', 'type', 'year', 'members',
+            'meeting_time', 'meeting_day', 'meeting_location',
+            'communities', 'chair', 'treasurer',
+            'secretary', 'about', 'is_alumni'
         ]
+
+    def validate(self, data):
+        # ✅ Ensure year only applies to Year Group
+        if data.get("type") != "Year Group":
+            data["year"] = ""
+        return data
