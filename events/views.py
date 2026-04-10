@@ -95,17 +95,31 @@ class CalendarFileViewSet(viewsets.ViewSet):
 
 # ==================== PUBLIC ENDPOINTS ====================
 
+# class PublicUpcomingEventsView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def get(self, request):
+#         events = UpcomingEvent.objects.all().order_by('date')
+#         serializer = UpcomingEventSerializer(events, many=True)
+#         return Response({
+#             "count": events.count(),
+#             "upcoming_events": serializer.data
+#         })
+
+from django.utils import timezone
+
 class PublicUpcomingEventsView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        events = UpcomingEvent.objects.all().order_by('date')
+        today = timezone.localdate()
+        events = UpcomingEvent.objects.filter(date__gte=today).order_by('date')
+
         serializer = UpcomingEventSerializer(events, many=True)
         return Response({
             "count": events.count(),
             "upcoming_events": serializer.data
         })
-
 
 class PublicRegularEventsView(APIView):
     permission_classes = [AllowAny]
