@@ -103,16 +103,9 @@ def parse_readings(soup: BeautifulSoup, target_date: date) -> dict:
 
         body = block.find("div", class_="content-body")
 
-        if body:
-            # Critical: replace every <br> with a real newline BEFORE
-            # calling get_text. BeautifulSoup silently drops <br> tags and
-            # all verse/line breaks collapse into one wall of text otherwise.
-            for br in body.find_all("br"):
-                br.replace_with("\n")
-            raw_text = body.get_text(separator="\n")
-        else:
-            raw_text = ""
- 
+        # Use separator="\n" so each HTML element boundary becomes a newline.
+        # This preserves verse-level line breaks that live in <br> / block tags.
+        raw_text = body.get_text(separator="\n") if body else ""
         text = clean_text(raw_text)
 
         readings.append(
