@@ -17,8 +17,9 @@ def fetch_readings(target_date: date = None) -> dict:
     if target_date is None:
         target_date = date.today()
 
-    url = f"https://bible.usccb.org/bible/readings/{target_date.strftime('%m%d%y')}.cfm"
-
+    # url = f"https://bible.usccb.org/bible/readings/{target_date.strftime('%m%d%y')}.cfm"
+    url = f"https://bible.usccb.org/daily-bible-reading"
+    
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; DailyReadingsScraper/1.0)"
     }
